@@ -44,7 +44,7 @@ fileReader.onload = () => {
         <td>${item.title}</td>
         <td>${item.price}</td>
         <td><img src=${item.image}></td>
-        <td>${item.link}</td>
+        <td><a href="${item.link}">${item.link}</td>
       </tr>
       `
   }
