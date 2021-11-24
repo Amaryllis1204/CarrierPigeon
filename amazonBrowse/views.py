@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # application/write_data.pyをインポートする
-from .application import write_data
+from .application import write_data, write_csv
 
 # Create your views here.
 def index(req):
@@ -17,3 +17,9 @@ def call_write_data(req):
         data = write_data.return_text()
 
         return HttpResponse(data)
+
+def call_write_csv(request):
+    if request.method == 'GET':
+        soup = write_csv.ama(request.GET.get("input_data"))
+        df = write_csv.get_info(soup)
+        write_csv.write_csv(df)

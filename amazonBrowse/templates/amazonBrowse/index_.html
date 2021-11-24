@@ -23,7 +23,8 @@
           var txt = document.getElementById("input_form").value;
 
           $.ajax({
-            url: "{% url 'amazonBrowse:call_write_data' %}",
+            // url: "{% url 'amazonBrowse:call_write_data' %}",
+            url: "{% url 'amazonBrowse:call_write_csv' %}",
             method: 'GET',
             data: {"input_data": txt},
             dataType: "text",
