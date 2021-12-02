@@ -40,6 +40,15 @@
                 <th>image</th>
                 <th>link</th>
               </tr>
+              {% for item in latest_amazon_goods_list%}
+              <tr>
+                <td>{{ item.id}}</td>
+                <td>{{ item.title}}</td>
+                <td>{{ item.price}}</td>
+                <td>{{ item.image}}</td>
+                <td>{{ item.link}}</td>
+              </tr>
+              {% endfor %}
             </thead>
             <tbody></tbody>
           </table>
