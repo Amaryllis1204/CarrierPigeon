@@ -26,7 +26,6 @@ def amazon_only(keyword):
     driver.quit()
     
     soup = BeautifulSoup(text, 'html.parser')
-    time.sleep(2)
     
     return soup
 
