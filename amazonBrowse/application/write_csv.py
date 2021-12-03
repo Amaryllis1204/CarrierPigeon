@@ -5,9 +5,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
 import datetime
-import pandas as pd
-import re
 import sqlite3
+from django.shortcuts import redirect
 
 def ama(keyword):
     uri = "https://www.amazon.co.jp/s?k=amazon限定"
@@ -60,6 +59,3 @@ def get_info(ele):
     c.executemany(insert_sql, lst)
     db.commit()
     db.close()
-
-def write_csv(df):
-    df.to_csv("test.csv")
