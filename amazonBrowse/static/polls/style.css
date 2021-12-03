@@ -1,7 +1,28 @@
-li a{
-    color: green;
+.tab{
+    display: flex;
 }
 
-body {
-    background: white url("images/background.gif") no-repeat;
+.tab-menu{
+    width: calc(100%/3);
+    text-align: center;
+    background-color: aqua;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tab-menu.is-active{
+    background-color: blueviolet;
+    color: white;
+}
+
+.content-box{
+    margin-top: 20px;
+    display: none;
+    background-color: white;
+    height: 500px;
+    width:100%;
+}
+
+.content-box.is-active{
+    display: block;
 }

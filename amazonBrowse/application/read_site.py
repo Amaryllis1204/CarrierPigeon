@@ -8,7 +8,7 @@ import datetime
 import sqlite3
 from django.shortcuts import redirect
 
-def ama(keyword):
+def amazon_only(keyword):
     uri = "https://www.amazon.co.jp/s?k=amazon限定"
     url = uri + '+' + keyword + "&__mk_ja_JP=カタカナ&ref=nb_sb_noss_2"
     text = ''
@@ -30,14 +30,58 @@ def ama(keyword):
     
     return soup
 
-def get_info(ele):
+def amazon_domain_only(keyword):
+    uri = "https://www.amazon.co.jp/s?k=Amazon.co.jp限定"
+    url = uri + '+' + keyword + "&__mk_ja_JP=カタカナ&ref=nb_sb_noss_2"
+    text = ''
+    #ヘッドレスモードでブラウザを起動
+    options = Options()
+    options.add_argument('--headless')
+    
+    #ブラウザを起動
+    driver = webdriver.Chrome('/usr/bin/chromedriver')
+    driver.get(url)
+    driver.implicitly_wait(10)
+    text = driver.page_source
+    
+    #ブラウザの停止
+    driver.quit()
+    
+    soup = BeautifulSoup(text, 'html.parser')
+    time.sleep(2)
+    
+    return soup
+
+def amazon_only_brand(keyword):
+    uri = "https://www.amazon.co.jp/s?k=Amazon限定ブランド"
+    url = uri + '+' + keyword + "&__mk_ja_JP=カタカナ&ref=nb_sb_noss_2"
+    text = ''
+    #ヘッドレスモードでブラウザを起動
+    options = Options()
+    options.add_argument('--headless')
+    
+    #ブラウザを起動
+    driver = webdriver.Chrome('/usr/bin/chromedriver')
+    driver.get(url)
+    driver.implicitly_wait(10)
+    text = driver.page_source
+    
+    #ブラウザの停止
+    driver.quit()
+    
+    soup = BeautifulSoup(text, 'html.parser')
+    time.sleep(2)
+    
+    return soup
+
+def get_info(ele, dbname):
     lst = []
     tpl = ()
     goods = ele.find_all('div', class_ = 's-expand-height s-include-content-margin s-latency-cf-section s-border-bottom s-border-top')
     db = sqlite3.connect("db.sqlite3")
     c = db.cursor()
-    insert_sql = 'insert into amazonBrowse_amazongoods (title, price, image, link, pub_date) values (?,?,?,?,?)'
-    delete_sql = 'delete from amazonBrowse_amazongoods'
+    insert_sql = 'insert into ' + dbname +' (title, price, image, link, pub_date) values (?,?,?,?,?)'
+    delete_sql = 'delete from ' + dbname
     for i in goods:
         try:
             title = i.find('span', class_ = 'a-size-base-plus a-color-base a-text-normal').getText()
