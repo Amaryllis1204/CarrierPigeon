@@ -7,6 +7,7 @@ import time
 import datetime
 import pandas as pd
 import re
+import sqlite3
 
 def ama(keyword):
     uri = "https://www.amazon.co.jp/s?k=amazon限定"
@@ -32,34 +33,33 @@ def ama(keyword):
 
 def get_info(ele):
     lst = []
-    lst2 = []
-    lst3 = []
-    lst4 = []
-    
+    tpl = ()
     goods = ele.find_all('div', class_ = 's-expand-height s-include-content-margin s-latency-cf-section s-border-bottom s-border-top')
-
+    db = sqlite3.connect("db.sqlite3")
+    c = db.cursor()
+    insert_sql = 'insert into amazonBrowse_amazongoods (title, price, image, link, pub_date) values (?,?,?,?,?)'
+    delete_sql = 'delete from amazonBrowse_amazongoods'
     for i in goods:
         try:
             title = i.find('span', class_ = 'a-size-base-plus a-color-base a-text-normal').getText()
             price = i.find('span', class_ = 'a-price-whole').getText()
             image = i.find('img', class_ = 's-image').get('src')
             link = i.find('a', class_ = 'a-link-normal a-text-normal').get('href')
-            lst.append(title)
-            lst2.append(price)
-            lst3.append(image)
-            lst4.append('https://www.amazon.co.jp/' + link)
+            link = 'https://www.amazon.co.jp/' + link
+            pub_date = datetime.datetime.now()
+            lst.append((title, price, image, link, pub_date))
+
+            # lst.append((title, price, image, link))
         except AttributeError:
             title = ''
             price = ''
             image = ''
             link = ''
-        
-    df = pd.DataFrame({'title':lst,
-                     'price':lst2,
-                     'image':lst3,
-                      'link':lst4})
-    
-    return df
+            pub_date = ''
+    c.execute(delete_sql)
+    c.executemany(insert_sql, lst)
+    db.commit()
+    db.close()
 
 def write_csv(df):
-    df.to_csv('test.csv')
+    df.to_csv("test.csv")

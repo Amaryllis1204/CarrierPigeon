@@ -2,10 +2,19 @@ from django.shortcuts import render
 from django.http import HttpResponse
 # application/write_data.pyをインポートする
 from .application import write_data, write_csv
+from .models import AmazonGoods
+from django.template import loader
+import pandas as pd
+import sqlite3
 
 # Create your views here.
-def index(req):
-    return render(req, 'amazonBrowse/index.html')
+def index(request):
+    latest_amazon_goods_list = AmazonGoods.objects.all()
+    template = loader.get_template('amazonBrowse/index.html')
+    context = {
+        'latest_amazon_goods_list':latest_amazon_goods_list,
+    }
+    return HttpResponse(template.render(context, request))
 
 # ajaxでurl指定したメソッド
 def call_write_data(req):
@@ -21,5 +30,5 @@ def call_write_data(req):
 def call_write_csv(request):
     if request.method == 'GET':
         soup = write_csv.ama(request.GET.get("input_data"))
-        df = write_csv.get_info(soup)
-        write_csv.write_csv(df)
+        write_csv.get_info(soup)
+        return HttpResponse(request)

@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon限定の商品の検索</title>
-    <script type="text/javascript" src="{% static 'script.js' %}"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 </head>
 <body>
@@ -25,7 +24,7 @@
       <div class="columns">
         <div class="column">
           <input type="text" size="50" id="input_form">
-          <button type="button" onclick="clickBtn()">送信</button>
+          <button type="button" onclick="clickBtn(),reload()">送信</button>
         </div>
       </div>
 
@@ -38,15 +37,13 @@
                 <th>title</th>
                 <th>price</th>
                 <th>image</th>
-                <th>link</th>
               </tr>
               {% for item in latest_amazon_goods_list%}
               <tr>
                 <td>{{ item.id}}</td>
-                <td>{{ item.title}}</td>
+                <td><a href="{{item.link}}">{{item.title}}</a> </td>
                 <td>{{ item.price}}</td>
-                <td>{{ item.image}}</td>
-                <td>{{ item.link}}</td>
+                <td><img src="{{item.image}}"></td>
               </tr>
               {% endfor %}
             </thead>
@@ -60,7 +57,6 @@
 <script>
 function clickBtn() {
 var txt = document.getElementById("input_form").value;
-console.log("ok")
 $.ajax({
   url: "{% url 'amazonBrowse:call_write_csv' %}",
   method: 'GET',
@@ -76,11 +72,9 @@ $.ajax({
     console.log("error")
   }
 })
-.done(function(data) {
-  document.getElementById("text").textContent = data;
-  console.log("Success"); 
-});
+.done(function(){
 
+})   
 // csrf_tokenの取得に使う
 function getCookie(name) {
   var cookieValue = null;
@@ -104,7 +98,7 @@ function csrfSafeMethod(method) {
   return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
 };
 
-      }
+}
 </script>
 </body>
 </html>
