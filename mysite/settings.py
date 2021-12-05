@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t2m*+oupeughvu&#k*bp)*cid%$h*3w+hwj1crx)ltw$h61f7t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "192.168.3.5"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -130,3 +130,14 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = 'staticfiles'
+DEBUG = False
+try:
+    from .local_settings import *
+except ImportError:
+    pass
