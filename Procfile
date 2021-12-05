@@ -1,1 +1,1 @@
-web: gunicorn amazonBrowse.wsgi --log-file -
+web: gunicorn amazonBrowse.wsgi:application -b 0.0.0.0:$PORT
