@@ -18,7 +18,7 @@ def amazon_only(keyword):
     
     #ブラウザを起動
     #driver = webdriver.Chrome('/usr/bin/chromedriver')
-    driver = webdriver.Chrome(options=options, executable_path=driver_path)
+    driver = webdriver.Chrome(driver_path)
     driver.get(url)
     driver.implicitly_wait(10)
     text = driver.page_source
