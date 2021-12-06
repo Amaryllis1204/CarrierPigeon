@@ -46,7 +46,7 @@ def amazon_domain_only(keyword):
     options.add_argument('--headless')
     
     #ブラウザを起動
-    driver = webdriver.Chrome('/usr/bin/chromedriver')
+    driver = webdriver.Chrome('/app/.chromedriver/bin/chromedriver')
     driver.get(url)
     driver.implicitly_wait(10)
     text = driver.page_source
@@ -68,7 +68,7 @@ def amazon_only_brand(keyword):
     options.add_argument('--headless')
     
     #ブラウザを起動
-    driver = webdriver.Chrome('/usr/bin/chromedriver')
+    driver = webdriver.Chrome('/app/.chromedriver/bin/chromedriver')
     driver.get(url)
     driver.implicitly_wait(10)
     text = driver.page_source
