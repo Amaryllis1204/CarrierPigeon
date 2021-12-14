@@ -7,20 +7,15 @@ import datetime
 import sqlite3
 from django.shortcuts import redirect
 
+# driver_path = '/app/.chromedriver/bin/chromedriver'
+driver_path = '/usr/bin/chromedriver'
+
 def amazon_only(keyword):
     uri = "https://www.amazon.co.jp/s?k=amazon限定"
     url = uri + '+' + keyword + "&__mk_ja_JP=カタカナ&ref=nb_sb_noss_2"
     text = ''
     #ヘッドレスモードでブラウザを起動
-    # driver_path = '/app/.chromedriver/bin/chromedriver'
-    # options = Options()
-    # options.add_argument('--headless')
-    
-    # #ブラウザを起動
-    # #driver = webdriver.Chrome('/usr/bin/chromedriver')
-    # driver = webdriver.Chrome(driver_path)
 
-    driver_path = '/app/.chromedriver/bin/chromedriver'
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     #driverに設定 ※optionsを指定しないとheadlessにならないので注意
@@ -46,7 +41,7 @@ def amazon_domain_only(keyword):
     options.add_argument('--headless')
     
     #ブラウザを起動
-    driver = webdriver.Chrome('/app/.chromedriver/bin/chromedriver')
+    driver = webdriver.Chrome(options=options, executable_path=driver_path)
     driver.get(url)
     driver.implicitly_wait(10)
     text = driver.page_source
@@ -68,7 +63,7 @@ def amazon_only_brand(keyword):
     options.add_argument('--headless')
     
     #ブラウザを起動
-    driver = webdriver.Chrome('/app/.chromedriver/bin/chromedriver')
+    driver = webdriver.Chrome(options=options, executable_path=driver_path)
     driver.get(url)
     driver.implicitly_wait(10)
     text = driver.page_source
@@ -99,7 +94,6 @@ def get_info(ele, dbname):
             pub_date = datetime.datetime.now()
             lst.append((title, price, image, link, pub_date))
 
-            # lst.append((title, price, image, link))
         except AttributeError:
             title = ''
             price = ''
